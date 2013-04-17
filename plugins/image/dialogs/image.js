@@ -743,10 +743,10 @@
 								},
 									{
 									type: 'text',
-									id: 'txtHSpace',
-									requiredContent: 'img{margin-left,margin-right}',
+									id: 'txtLSpace',
+									requiredContent: 'img{margin-left}',
 									width: '60px',
-									label: editor.lang.image.hSpace,
+									label: editor.lang.image.lSpace,
 									'default': '',
 									onKeyUp: function() {
 										updatePreview( this.getDialog() );
@@ -754,20 +754,17 @@
 									onChange: function() {
 										commitInternally.call( this, 'advanced:txtdlgGenStyle' );
 									},
-									validate: CKEDITOR.dialog.validate.integer( editor.lang.image.validateHSpace ),
+									validate: CKEDITOR.dialog.validate.integer( editor.lang.image.validateMargin ),
 									setup: function( type, element ) {
 										if ( type == IMAGE ) {
-											var value, marginLeftPx, marginRightPx,
-												marginLeftStyle = element.getStyle( 'margin-left' ),
-												marginRightStyle = element.getStyle( 'margin-right' );
+											var value, marginLeftPx,
+												marginLeftStyle = element.getStyle( 'margin-left' );
 
 											marginLeftStyle = marginLeftStyle && marginLeftStyle.match( pxLengthRegex );
-											marginRightStyle = marginRightStyle && marginRightStyle.match( pxLengthRegex );
 											marginLeftPx = parseInt( marginLeftStyle, 10 );
-											marginRightPx = parseInt( marginRightStyle, 10 );
 
-											value = ( marginLeftPx == marginRightPx ) && marginLeftPx;
-											isNaN( parseInt( value, 10 ) ) && ( value = element.getAttribute( 'hspace' ) );
+											value = marginLeftPx;
+											isNaN( parseInt( value, 10 ) ) && ( value = element.getAttribute( 'lspace' ) );
 
 											this.setValue( value );
 										}
@@ -777,27 +774,24 @@
 										if ( type == IMAGE || type == PREVIEW ) {
 											if ( !isNaN( value ) ) {
 												element.setStyle( 'margin-left', CKEDITOR.tools.cssLength( value ) );
-												element.setStyle( 'margin-right', CKEDITOR.tools.cssLength( value ) );
 											} else if ( !value && this.isChanged() ) {
 												element.removeStyle( 'margin-left' );
-												element.removeStyle( 'margin-right' );
 											}
 
 											if ( !internalCommit && type == IMAGE )
-												element.removeAttribute( 'hspace' );
+												element.removeAttribute( 'lspace' );
 										} else if ( type == CLEANUP ) {
-											element.removeAttribute( 'hspace' );
+											element.removeAttribute( 'lspace' );
 											element.removeStyle( 'margin-left' );
-											element.removeStyle( 'margin-right' );
 										}
 									}
 								},
-									{
+								{
 									type: 'text',
-									id: 'txtVSpace',
-									requiredContent: 'img{margin-top,margin-bottom}',
+									id: 'txtRSpace',
+									requiredContent: 'img{margin-right}',
 									width: '60px',
-									label: editor.lang.image.vSpace,
+									label: editor.lang.image.rSpace,
 									'default': '',
 									onKeyUp: function() {
 										updatePreview( this.getDialog() );
@@ -805,20 +799,62 @@
 									onChange: function() {
 										commitInternally.call( this, 'advanced:txtdlgGenStyle' );
 									},
-									validate: CKEDITOR.dialog.validate.integer( editor.lang.image.validateVSpace ),
+									validate: CKEDITOR.dialog.validate.integer( editor.lang.image.validateMargin ),
 									setup: function( type, element ) {
 										if ( type == IMAGE ) {
-											var value, marginTopPx, marginBottomPx,
-												marginTopStyle = element.getStyle( 'margin-top' ),
-												marginBottomStyle = element.getStyle( 'margin-bottom' );
+											var value, marginRightPx,
+												marginRightStyle = element.getStyle( 'margin-right' );
+
+											marginRightStyle = marginRightStyle && marginRightStyle.match( pxLengthRegex );
+											marginRightPx = parseInt( marginRightStyle, 10 );
+
+											value = marginRightPx;
+											isNaN( parseInt( value, 10 ) ) && ( value = element.getAttribute( 'rspace' ) );
+
+											this.setValue( value );
+										}
+									},
+									commit: function( type, element, internalCommit ) {
+										var value = parseInt( this.getValue(), 10 );
+										if ( type == IMAGE || type == PREVIEW ) {
+											if ( !isNaN( value ) ) {
+												element.setStyle( 'margin-right', CKEDITOR.tools.cssLength( value ) );
+											} else if ( !value && this.isChanged() ) {
+												element.removeStyle( 'margin-right' );
+											}
+
+											if ( !internalCommit && type == IMAGE )
+												element.removeAttribute( 'rspace' );
+										} else if ( type == CLEANUP ) {
+											element.removeAttribute( 'rspace' );
+											element.removeStyle( 'margin-right' );
+										}
+									}
+								},
+									{
+									type: 'text',
+									id: 'txtTSpace',
+									requiredContent: 'img{margin-top}',
+									width: '60px',
+									label: editor.lang.image.tSpace,
+									'default': '',
+									onKeyUp: function() {
+										updatePreview( this.getDialog() );
+									},
+									onChange: function() {
+										commitInternally.call( this, 'advanced:txtdlgGenStyle' );
+									},
+									validate: CKEDITOR.dialog.validate.integer( editor.lang.image.validateMargin ),
+									setup: function( type, element ) {
+										if ( type == IMAGE ) {
+											var value, marginTopPx,
+												marginTopStyle = element.getStyle( 'margin-top' );
 
 											marginTopStyle = marginTopStyle && marginTopStyle.match( pxLengthRegex );
-											marginBottomStyle = marginBottomStyle && marginBottomStyle.match( pxLengthRegex );
 											marginTopPx = parseInt( marginTopStyle, 10 );
-											marginBottomPx = parseInt( marginBottomStyle, 10 );
 
-											value = ( marginTopPx == marginBottomPx ) && marginTopPx;
-											isNaN( parseInt( value, 10 ) ) && ( value = element.getAttribute( 'vspace' ) );
+											value = marginTopPx;
+											isNaN( parseInt( value, 10 ) ) && ( value = element.getAttribute( 'tspace' ) );
 											this.setValue( value );
 										}
 									},
@@ -827,17 +863,58 @@
 										if ( type == IMAGE || type == PREVIEW ) {
 											if ( !isNaN( value ) ) {
 												element.setStyle( 'margin-top', CKEDITOR.tools.cssLength( value ) );
-												element.setStyle( 'margin-bottom', CKEDITOR.tools.cssLength( value ) );
 											} else if ( !value && this.isChanged() ) {
 												element.removeStyle( 'margin-top' );
+											}
+
+											if ( !internalCommit && type == IMAGE )
+												element.removeAttribute( 'tspace' );
+										} else if ( type == CLEANUP ) {
+											element.removeAttribute( 'tspace' );
+											element.removeStyle( 'margin-top' );
+										}
+									}
+								},
+								{
+									type: 'text',
+									id: 'txtBSpace',
+									requiredContent: 'img{margin-bottom}',
+									width: '60px',
+									label: editor.lang.image.bSpace,
+									'default': '',
+									onKeyUp: function() {
+										updatePreview( this.getDialog() );
+									},
+									onChange: function() {
+										commitInternally.call( this, 'advanced:txtdlgGenStyle' );
+									},
+									validate: CKEDITOR.dialog.validate.integer( editor.lang.image.validateMargin ),
+									setup: function( type, element ) {
+										if ( type == IMAGE ) {
+											var value, marginBottomPx,
+												marginBottomStyle = element.getStyle( 'margin-bottom' );
+
+											marginBottomStyle = marginBottomStyle && marginBottomStyle.match( pxLengthRegex );
+											marginBottomPx = parseInt( marginBottomStyle, 10 );
+
+											value = marginBottomPx;
+											isNaN( parseInt( value, 10 ) ) && ( value = element.getAttribute( 'bspace' ) );
+											this.setValue( value );
+										}
+									},
+									commit: function( type, element, internalCommit ) {
+										var value = parseInt( this.getValue(), 10 );
+										if ( type == IMAGE || type == PREVIEW ) {
+											if ( !isNaN( value ) ) {
+												element.setStyle( 'margin-bottom', CKEDITOR.tools.cssLength( value ) );
+											} else if ( !value && this.isChanged() ) {
 												element.removeStyle( 'margin-bottom' );
 											}
 
 											if ( !internalCommit && type == IMAGE )
-												element.removeAttribute( 'vspace' );
+												element.removeAttribute( 'bspace' );
 										} else if ( type == CLEANUP ) {
-											element.removeAttribute( 'vspace' );
-											element.removeStyle( 'margin-top' );
+											element.removeAttribute( 'bspace' );
 											element.removeStyle( 'margin-bottom' );
 										}
 									}
