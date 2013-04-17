@@ -23,6 +23,5 @@ CKEDITOR.plugins.setLang( 'image', 'en', {
 	lSpace: 'Left Margin',
 	rSpace: 'Right Margin',
 	validateBorder: 'Border must be a whole number.',
-	validateHSpace: 'HSpace must be a whole number.',
-	validateVSpace: 'VSpace must be a whole number.'
+	validateMargin: 'Margins must be a whole number.'
 });
